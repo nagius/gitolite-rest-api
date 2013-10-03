@@ -30,4 +30,8 @@ class RepoConfig
       @repo.rm_key(item)
     end
   end
+
+  def remove_repo(repo_name)
+    @repo.rm_repo(repo_name)
+  end
 end

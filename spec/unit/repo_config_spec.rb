@@ -74,4 +74,11 @@ describe RepoConfig do
       end
     end
   end
+
+  it "should remove a repo" do
+    gitolite_admin_class_double.should_receive(:rm_repo).with(repo).and_return(true)
+
+    result = repo_config.remove_repo repo
+    result.should be_true
+  end
 end

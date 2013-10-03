@@ -57,8 +57,9 @@ describe RepoConfig do
   end
 
   it "should add a new repo" do
+    gitolite_repo_class_double.should_receive(:new).with(repo).and_return(gitolite_repo_class_double)
     gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
-    method_chain_double.should_receive(:add_repo).with(repo).and_return(true)
+    method_chain_double.should_receive(:add_repo).with(gitolite_repo_class_double).and_return(true)
 
     result = repo_config.add_repo repo
     result.should be_true

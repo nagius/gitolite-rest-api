@@ -17,6 +17,12 @@ get '/repos' do
   end
 end
 
+post '/repos' do
+  repo_config.add_repo params[:repo_name]
+
+  201
+end
+
 get '/users' do
   respond_to do |f|
     f.json { JSON.dump(repo_config.users) }

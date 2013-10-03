@@ -11,6 +11,14 @@ describe Sinatra::Application do
     end
   end
 
+  context "responding to POST /repos" do
+    it "should create the repo" do
+      post '/repos', :repo_name => "test"
+
+      last_response.status.should be_eql 201
+    end
+  end
+
   context "responding to GET /users" do
 
     it "should return the list of users" do

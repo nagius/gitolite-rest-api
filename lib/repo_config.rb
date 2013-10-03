@@ -24,7 +24,8 @@ class RepoConfig
   end
 
   def add_repo(repo_name)
-    @repo.config.add_repo(repo_name)
+    repo = Gitolite::Config::Repo.new(repo_name)
+    @repo.config.add_repo(repo)
   end
 
   def add_user(user, str_key)

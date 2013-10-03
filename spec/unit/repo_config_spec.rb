@@ -10,6 +10,7 @@ describe RepoConfig do
   let(:user) { 'user' }
   let(:key_string) { 'key string' }
   let(:repo) { 'repo' }
+  let(:group) { 'group' }
   let(:admin_path) { 'admin_path' }
 
   let(:repo_config) do
@@ -92,5 +93,14 @@ describe RepoConfig do
 
     result = repo_config.remove_repo repo
     result.should be_true
+  end
+
+  it "should create a group" do
+    gitolite_group_class_double.should_receive(:new).with(group).and_return(gitolite_group_class_double)
+    gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
+    method_chain_double.should_receive(:groups).and_return(hash)
+    hash.should_receive(:[]=).with(group, gitolite_group_class_double)
+
+    repo_config.add_group group
   end
 end

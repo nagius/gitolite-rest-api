@@ -44,4 +44,9 @@ class RepoConfig
   def remove_repo(repo_name)
     @repo.rm_repo(repo_name)
   end
+
+  def add_group(group_name)
+    group = Gitolite::Config::Group.new(group_name)
+    @repo.config.groups[group_name] = group
+  end
 end

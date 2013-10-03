@@ -22,8 +22,8 @@ describe Sinatra::Application do
   end
 
   context "responding to POST /users" do
-    it "should create the repo" do
-      post '/users', :username => "test"
+    it "should create the user" do
+      post '/users', :username => "test", :ssh_key => "ssh key as string"
 
       last_response.status.should be_eql 201
     end

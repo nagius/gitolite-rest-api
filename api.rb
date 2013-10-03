@@ -24,7 +24,7 @@ get '/users' do
 end
 
 post '/users' do
-  repo_config.add_user params[:username]
+  repo_config.add_user params[:username], params[:ssh_key]
 
   201
 end

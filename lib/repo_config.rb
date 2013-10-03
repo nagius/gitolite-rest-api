@@ -13,6 +13,16 @@ class RepoConfig
     @repo.config.repos.keys
   end
 
+  def get_groups
+    result = Hash.new
+    groups = @repo.config.groups
+    groups.each do | key, value |
+      result[key.to_sym] = value.users
+    end
+
+    result
+  end
+
   def add_repo(repo_name)
     @repo.config.add_repo(repo_name)
   end

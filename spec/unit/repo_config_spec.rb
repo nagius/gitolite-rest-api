@@ -3,6 +3,7 @@ require_relative '../../lib/repo_config'
 describe RepoConfig do
   let(:gitolite_admin_class_double) { double('admin') }
   let(:gitolite_ssh_key_class_double) { double('ssh_key') }
+  let(:gitolite_group_class_double) { double('group') }
   let(:method_chain_double) { double('method_chain') }
   let(:hash) { Hash.new }
   let(:list) { Array.new }
@@ -18,6 +19,7 @@ describe RepoConfig do
   before do
     stub_const 'Gitolite::GitoliteAdmin', gitolite_admin_class_double
     stub_const 'Gitolite::SSHKey', gitolite_ssh_key_class_double
+    stub_const 'Gitolite::Config::Group', gitolite_group_class_double
 
     gitolite_admin_class_double.should_receive(:new).with(admin_path).and_return(gitolite_admin_class_double)
   end
@@ -37,6 +39,16 @@ describe RepoConfig do
 
     repos = repo_config.get_repos
     repos.should be_an_instance_of(Array)
+  end
+
+  it "should list user groups" do
+    hash = { "repo1" => gitolite_group_class_double, "repo2" => gitolite_group_class_double }
+    gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
+    method_chain_double.should_receive(:groups).and_return(hash)
+    gitolite_group_class_double.should_receive(:users).twice.and_return(list)
+
+    groups = repo_config.get_groups
+    groups.should be_an_instance_of Hash
   end
 
   it "should add a new repo" do

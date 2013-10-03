@@ -5,15 +5,15 @@ class RepoConfig
     @repo = Gitolite::GitoliteAdmin.new(conf_path)
   end
 
-  def get_users
+  def users
     @repo.ssh_keys.keys
   end
 
-  def get_repos
+  def repos
     @repo.config.repos.keys
   end
 
-  def get_groups
+  def groups
     result = Hash.new
     groups = @repo.config.groups
     groups.each do | key, value |

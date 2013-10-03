@@ -28,7 +28,7 @@ describe RepoConfig do
     gitolite_admin_class_double.should_receive(:ssh_keys).and_return(hash)
     hash.should_receive(:keys).and_return(list)
     
-    users = repo_config.get_users
+    users = repo_config.users
     users.should be_an_instance_of(Array)
   end
 
@@ -37,7 +37,7 @@ describe RepoConfig do
     method_chain_double.should_receive(:repos).and_return(hash)
     hash.should_receive(:keys).and_return(list)
 
-    repos = repo_config.get_repos
+    repos = repo_config.repos
     repos.should be_an_instance_of(Array)
   end
 
@@ -47,7 +47,7 @@ describe RepoConfig do
     method_chain_double.should_receive(:groups).and_return(hash)
     gitolite_group_class_double.should_receive(:users).twice.and_return(list)
 
-    groups = repo_config.get_groups
+    groups = repo_config.groups
     groups.should be_an_instance_of Hash
   end
 

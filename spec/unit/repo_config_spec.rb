@@ -4,6 +4,7 @@ describe RepoConfig do
   let(:gitolite_admin_class_double) { double('admin') }
   let(:gitolite_ssh_key_class_double) { double('ssh_key') }
   let(:gitolite_group_class_double) { double('group') }
+  let(:gitolite_repo_class_double) { double('repo') }
   let(:method_chain_double) { double('method_chain') }
   let(:hash) { Hash.new }
   let(:list) { Array.new }
@@ -12,6 +13,8 @@ describe RepoConfig do
   let(:repo) { 'repo' }
   let(:group) { 'group' }
   let(:admin_path) { 'admin_path' }
+  let(:permission) { 'RW+' }
+  let(:string_empty) { '' }
 
   let(:repo_config) do
     RepoConfig.new(admin_path)
@@ -19,8 +22,9 @@ describe RepoConfig do
 
   before do
     stub_const 'Gitolite::GitoliteAdmin', gitolite_admin_class_double
-    stub_const 'Gitolite::SSHKey', gitolite_ssh_key_class_double
     stub_const 'Gitolite::Config::Group', gitolite_group_class_double
+    stub_const 'Gitolite::Config::Repo', gitolite_repo_class_double
+    stub_const 'Gitolite::SSHKey', gitolite_ssh_key_class_double
 
     gitolite_admin_class_double.should_receive(:new).with(admin_path).and_return(gitolite_admin_class_double)
   end
@@ -128,5 +132,43 @@ describe RepoConfig do
     list.should_receive(:push).with(user)
 
     repo_config.add_to_group user, group
+  end
+
+  describe ".set_permission" do
+    context "with one user passed as parameter" do
+      it "should set the permission for that user in that repository" do
+        gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
+        method_chain_double.should_receive(:get_repo).with(repo).and_return(gitolite_repo_class_double)
+        gitolite_repo_class_double.should_receive(:add_permission).with(permission, string_empty, user)
+
+        repo_config.set_permission({ :user => user,  :repo => repo, :permissions => permission })
+      end
+    end
+
+    context "with many users passed as parameter" do
+      it "should set the permissions to all users passed as parameter" do
+        users = [user, user, user]
+        gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
+        method_chain_double.should_receive(:get_repo).with(repo).and_return(gitolite_repo_class_double)
+        gitolite_repo_class_double.should_receive(:add_permission).with(permission, string_empty, user, user, user)
+
+        repo_config.set_permission({ :users => users,  :repo => repo, :permissions => permission })
+      end
+    end
+
+    context "with a group passed as parameter" do
+      it "should add the permission to all members of the group" do
+        users = [user, user, user]
+        gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
+        method_chain_double.should_receive(:get_repo).with(repo).and_return(gitolite_repo_class_double)
+
+        gitolite_admin_class_double.stub_chain(:config, :groups, :[]).with(group).and_return(gitolite_group_class_double)
+        gitolite_group_class_double.should_receive(:users).and_return(users)
+
+        gitolite_repo_class_double.should_receive(:add_permission).with(permission, string_empty, user, user, user)
+
+        repo_config.set_permission({ :group => group, :permissions => permission, :repo => repo })
+      end
+    end
   end
 end

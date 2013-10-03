@@ -55,4 +55,25 @@ class RepoConfig
     group = @repo.config.groups[group_name]
     group.users.push(username)
   end
+
+  def set_permission(options)
+    repo = @repo.config.get_repo(options[:repo])
+    permission_to = nil
+    
+    if options.has_key? :user
+      permission_to = [options[:user]]
+    end
+
+    if options.has_key? :users
+      permission_to = options[:users]
+    end
+
+    if options.has_key? :group
+      permission_to = @repo.config.groups[options[:group]].users
+    end
+
+    permissions = options[:permissions]
+
+    repo.add_permission(permissions, "", *permission_to)
+  end
 end

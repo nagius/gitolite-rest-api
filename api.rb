@@ -40,3 +40,9 @@ get '/groups' do
     f.json { JSON.dump(repo_config.groups) }
   end
 end
+
+post '/groups' do
+  repo_config.add_group params[:group_name]
+
+  201
+end

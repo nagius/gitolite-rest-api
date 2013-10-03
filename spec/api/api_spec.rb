@@ -46,4 +46,12 @@ describe Sinatra::Application do
       JSON.parse(last_response.body).should be_an_instance_of Hash
     end
   end
+
+  context "responding to POST /groups" do
+    it "should create the group" do
+      post '/groups', :group_name => "test"
+
+      last_response.status.should be_eql 201
+    end
+  end
 end

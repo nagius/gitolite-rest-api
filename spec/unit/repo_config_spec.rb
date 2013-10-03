@@ -95,12 +95,28 @@ describe RepoConfig do
     result.should be_true
   end
 
-  it "should create a group" do
-    gitolite_group_class_double.should_receive(:new).with(group).and_return(gitolite_group_class_double)
-    gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
-    method_chain_double.should_receive(:groups).and_return(hash)
-    hash.should_receive(:[]=).with(group, gitolite_group_class_double)
+  describe ".add_group" do
+    context "with no users passed as argument" do
+      it "should create the group" do
+        gitolite_group_class_double.should_receive(:new).with(group).and_return(gitolite_group_class_double)
+        gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
+        method_chain_double.should_receive(:groups).and_return(hash)
+        hash.should_receive(:[]=).with(group, gitolite_group_class_double)
 
-    repo_config.add_group group
+        repo_config.add_group group
+      end
+    end
+
+    context "with an array of users passed as parameter" do
+      it "should create the group and add the users" do
+        gitolite_group_class_double.should_receive(:new).with(group).and_return(gitolite_group_class_double)
+        gitolite_group_class_double.should_receive(:users=).with(list)
+        gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
+        method_chain_double.should_receive(:groups).and_return(hash)
+        hash.should_receive(:[]=).with(group, gitolite_group_class_double)
+
+        repo_config.add_group group, list
+      end
+    end
   end
 end

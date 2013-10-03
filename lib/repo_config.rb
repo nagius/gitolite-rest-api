@@ -45,8 +45,9 @@ class RepoConfig
     @repo.rm_repo(repo_name)
   end
 
-  def add_group(group_name)
+  def add_group(group_name, users=nil)
     group = Gitolite::Config::Group.new(group_name)
+    group.users = users if users
     @repo.config.groups[group_name] = group
   end
 end

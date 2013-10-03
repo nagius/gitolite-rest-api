@@ -119,4 +119,14 @@ describe RepoConfig do
       end
     end
   end
+
+  it "should be able to add an user in a group" do
+    gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
+    method_chain_double.should_receive(:groups).and_return(hash)
+    hash.should_receive(:[]).with(group).and_return(gitolite_group_class_double)
+    gitolite_group_class_double.should_receive(:users).and_return(list)
+    list.should_receive(:push).with(user)
+
+    repo_config.add_to_group user, group
+  end
 end

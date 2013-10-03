@@ -50,4 +50,9 @@ class RepoConfig
     group.users = users if users
     @repo.config.groups[group_name] = group
   end
+
+  def add_to_group(username, group_name)
+    group = @repo.config.groups[group_name]
+    group.users.push(username)
+  end
 end

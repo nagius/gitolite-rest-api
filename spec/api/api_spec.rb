@@ -21,6 +21,14 @@ describe Sinatra::Application do
     end
   end
 
+  context "responding to POST /users" do
+    it "should create the repo" do
+      post '/users', :username => "test"
+
+      last_response.status.should be_eql 201
+    end
+  end
+
   context "responding to GET /groups" do
 
     it "should return the list of groups" do
@@ -30,5 +38,4 @@ describe Sinatra::Application do
       JSON.parse(last_response.body).should be_an_instance_of Hash
     end
   end
-
 end

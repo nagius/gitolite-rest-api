@@ -23,6 +23,12 @@ get '/users' do
   end
 end
 
+post '/users' do
+  repo_config.add_user params[:username]
+
+  201
+end
+
 get '/groups' do
   respond_to do |f|
     f.json { JSON.dump(repo_config.groups) }

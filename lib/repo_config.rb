@@ -86,6 +86,13 @@ class RepoConfig
     @repo.config.groups[group_name].has_user? username
   end
 
+  def remove_group(group_name)
+    group = @repo.config.groups[group_name]
+    @repo.config.rm_group(group)
+
+    save "removed group #{group_name} with all users"
+  end
+
   def set_permission(options)
     repo = @repo.config.get_repo(options[:repo])
     permission_to = nil

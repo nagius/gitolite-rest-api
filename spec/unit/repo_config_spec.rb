@@ -193,6 +193,17 @@ describe RepoConfig do
     result.should be_true
   end
 
+  it "should be able to remove a group" do
+    gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
+    method_chain_double.should_receive(:groups).and_return(hash)
+    hash.should_receive(:[]).with(group).and_return(gitolite_group_class_double)
+    gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
+    method_chain_double.should_receive(:rm_group).with(gitolite_group_class_double)
+    gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
+
+    repo_config.remove_group group
+  end
+
   describe ".set_permission" do
     context "with one user passed as parameter" do
       it "should set the permission for that user in that repository" do

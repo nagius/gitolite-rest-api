@@ -93,4 +93,13 @@ describe Sinatra::Application do
       last_response.status.should be_eql created_http_status
     end
   end
+
+  context "responding DELETE /groups" do
+    it "should delete the group with all users" do
+      repo_config_double.should_receive(:remove_group).with(group_name)
+
+      delete '/groups', :group_name => group_name
+      last_response.status.should be_eql deleted_http_status
+    end
+  end
 end

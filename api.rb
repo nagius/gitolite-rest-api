@@ -56,4 +56,9 @@ post '/groups' do
   end
 
   CREATED_STATUS
+delete '/groups' do
+  @repo_config.remove_group params[:group_name]
+
+  DELETED_STATUS
+end
 end

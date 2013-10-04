@@ -67,4 +67,10 @@ delete '/groups' do
 
   DELETED_STATUS
 end
+
+delete '/groups/:group_name/user/:username' do
+  @repo_config.remove_from_group params[:username], params[:group_name]
+
+  DELETED_STATUS
+end
 end

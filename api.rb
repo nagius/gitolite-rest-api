@@ -62,6 +62,8 @@ post '/groups' do
   end
 
   CREATED_STATUS
+end
+
 delete '/groups' do
   @repo_config.remove_group params[:group_name]
 
@@ -73,4 +75,13 @@ delete '/groups/:group_name/user/:username' do
 
   DELETED_STATUS
 end
+
+post '/:repo/permissions' do
+  keys = ['user', 'users', 'group', 'repo', 'permissions']
+  method_params = {}
+  keys.each do | key |
+    method_params[key.to_sym] = params[key.to_sym] if params[key.to_sym]
+  end
+
+  @repo_config.set_permissions method_params
 end

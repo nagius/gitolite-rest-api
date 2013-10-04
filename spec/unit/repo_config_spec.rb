@@ -60,17 +60,17 @@ describe RepoConfig do
     gitolite_repo_class_double.should_receive(:new).with(repo).and_return(gitolite_repo_class_double)
     gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
     method_chain_double.should_receive(:add_repo).with(gitolite_repo_class_double).and_return(true)
+    gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
 
-    result = repo_config.add_repo repo
-    result.should be_true
+    repo_config.add_repo repo
   end
 
   it "should add a new user" do
     gitolite_ssh_key_class_double.should_receive(:from_string).with(key_string, user).and_return(gitolite_ssh_key_class_double)
     gitolite_admin_class_double.should_receive(:add_key).with(gitolite_ssh_key_class_double).and_return(true)
+    gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
 
-    result = repo_config.add_user(user, key_string)
-    result.should be_true
+    repo_config.add_user(user, key_string)
   end
 
   describe ".remove_user" do
@@ -78,6 +78,7 @@ describe RepoConfig do
       it "should remove the key" do
         gitolite_admin_class_double.stub_chain(:ssh_keys, :keys, :[]).with(user).and_return(gitolite_ssh_key_class_double)
         gitolite_admin_class_double.should_receive(:rm_key).once.with(gitolite_ssh_key_class_double)
+        gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
 
         repo_config.remove_user user
       end
@@ -87,6 +88,7 @@ describe RepoConfig do
       it "should remove all keys" do
         gitolite_admin_class_double.stub_chain(:ssh_keys, :keys, :[]).with(user).and_return([gitolite_ssh_key_class_double, gitolite_ssh_key_class_double])
         gitolite_admin_class_double.should_receive(:rm_key).twice.with(gitolite_ssh_key_class_double)
+        gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
 
         repo_config.remove_user user
       end
@@ -95,9 +97,9 @@ describe RepoConfig do
 
   it "should remove a repo" do
     gitolite_admin_class_double.should_receive(:rm_repo).with(repo).and_return(true)
+    gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
 
-    result = repo_config.remove_repo repo
-    result.should be_true
+    repo_config.remove_repo repo
   end
 
   describe ".add_group" do
@@ -107,6 +109,7 @@ describe RepoConfig do
         gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
         method_chain_double.should_receive(:groups).and_return(hash)
         hash.should_receive(:[]=).with(group, gitolite_group_class_double)
+        gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
 
         repo_config.add_group group
       end
@@ -119,6 +122,7 @@ describe RepoConfig do
         gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
         method_chain_double.should_receive(:groups).and_return(hash)
         hash.should_receive(:[]=).with(group, gitolite_group_class_double)
+        gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
 
         repo_config.add_group group, list
       end
@@ -131,6 +135,7 @@ describe RepoConfig do
     hash.should_receive(:[]).with(group).and_return(gitolite_group_class_double)
     gitolite_group_class_double.should_receive(:users).and_return(list)
     list.should_receive(:push).with(user)
+    gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
 
     repo_config.add_to_group user, group
   end
@@ -141,6 +146,7 @@ describe RepoConfig do
         gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
         method_chain_double.should_receive(:get_repo).with(repo).and_return(gitolite_repo_class_double)
         gitolite_repo_class_double.should_receive(:add_permission).with(permission, string_empty, user)
+        gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
 
         repo_config.set_permission({ :user => user,  :repo => repo, :permissions => permission })
       end
@@ -152,6 +158,7 @@ describe RepoConfig do
         gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
         method_chain_double.should_receive(:get_repo).with(repo).and_return(gitolite_repo_class_double)
         gitolite_repo_class_double.should_receive(:add_permission).with(permission, string_empty, user, user, user)
+        gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
 
         repo_config.set_permission({ :users => users,  :repo => repo, :permissions => permission })
       end
@@ -167,6 +174,7 @@ describe RepoConfig do
         gitolite_group_class_double.should_receive(:users).and_return(users)
 
         gitolite_repo_class_double.should_receive(:add_permission).with(permission, string_empty, user, user, user)
+        gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
 
         repo_config.set_permission({ :group => group, :permissions => permission, :repo => repo })
       end

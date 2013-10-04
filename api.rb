@@ -42,6 +42,12 @@ post '/users' do
   CREATED_STATUS
 end
 
+delete '/users' do
+  @repo_config.remove_user params[:username]
+
+  DELETED_STATUS
+end
+
 get '/groups' do
   respond_to do |f|
     f.json { JSON.dump(@repo_config.groups) }

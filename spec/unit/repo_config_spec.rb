@@ -129,15 +129,68 @@ describe RepoConfig do
     end
   end
 
-  it "should be able to add an user in a group" do
+  describe ".add_to_group" do
+    context "when only one user is passed by param" do
+      it "should add the user in the group" do
+        gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
+        method_chain_double.should_receive(:groups).and_return(hash)
+        hash.should_receive(:[]).with(group).and_return(gitolite_group_class_double)
+        gitolite_group_class_double.should_receive(:add_user).with(user)
+        gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
+
+        repo_config.add_to_group user, group
+      end
+    end
+
+    context "when many users are passed by param" do
+      it "should add all the users in the group" do
+        users = [user, user, user]
+        gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
+        method_chain_double.should_receive(:groups).and_return(hash)
+        hash.should_receive(:[]).with(group).and_return(gitolite_group_class_double)
+        gitolite_group_class_double.should_receive(:add_users).with(user, user, user)
+        gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
+
+        repo_config.add_to_group users, group
+      end
+    end
+  end
+
+  describe ".remove_from_group" do
+    context "when a single user is passed by param" do
+      it "should remove the user from the group" do
+        gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
+        method_chain_double.should_receive(:groups).and_return(hash)
+        hash.should_receive(:[]).with(group).and_return(gitolite_group_class_double)
+        gitolite_group_class_double.should_receive(:rm_user).with(user)
+        gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
+
+        repo_config.remove_from_group user, group
+      end
+    end
+
+    context "when many users are passed by param" do
+      it "should remove all users from the group" do
+        users = [user, user, user]
+        gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
+        method_chain_double.should_receive(:groups).and_return(hash)
+        hash.should_receive(:[]).with(group).and_return(gitolite_group_class_double)
+        gitolite_group_class_double.should_receive(:rm_user).exactly(3).times.with(user)
+        gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
+
+        repo_config.remove_from_group users, group
+      end
+    end
+  end
+
+  it "should be able to look for the user in a group" do
     gitolite_admin_class_double.should_receive(:config).and_return(method_chain_double)
     method_chain_double.should_receive(:groups).and_return(hash)
     hash.should_receive(:[]).with(group).and_return(gitolite_group_class_double)
-    gitolite_group_class_double.should_receive(:users).and_return(list)
-    list.should_receive(:push).with(user)
-    gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
+    gitolite_group_class_double.should_receive(:has_user?).with(user).and_return(true)
 
-    repo_config.add_to_group user, group
+    result = repo_config.group_has_user? group, user
+    result.should be_true
   end
 
   describe ".set_permission" do

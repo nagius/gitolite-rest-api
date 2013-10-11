@@ -1,2 +1,4 @@
 .versions.conf
 config.yml
+config.ru
+thin_config.yml

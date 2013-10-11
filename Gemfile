@@ -1,3 +1,5 @@
+source 'https://rubygems.org'
+
 gem 'gitolite'
 gem 'json'
 gem 'rspec'

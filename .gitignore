@@ -1,4 +1,5 @@
+logs/
 .versions.conf
 config.yml
 config.ru
-thin_config.yml
+config_thin.yml

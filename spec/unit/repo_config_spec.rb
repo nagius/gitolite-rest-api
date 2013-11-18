@@ -212,7 +212,7 @@ describe RepoConfig do
         gitolite_repo_class_double.should_receive(:add_permission).with(permission, string_empty, user)
         gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
 
-        repo_config.set_permission({ :user => user,  :repo => repo, :permissions => permission })
+        repo_config.set_permissions({ :user => user,  :repo => repo, :permissions => permission })
       end
     end
 
@@ -224,7 +224,7 @@ describe RepoConfig do
         gitolite_repo_class_double.should_receive(:add_permission).with(permission, string_empty, user, user, user)
         gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
 
-        repo_config.set_permission({ :users => users,  :repo => repo, :permissions => permission })
+        repo_config.set_permissions({ :users => users,  :repo => repo, :permissions => permission })
       end
     end
 
@@ -240,7 +240,7 @@ describe RepoConfig do
         gitolite_repo_class_double.should_receive(:add_permission).with(permission, string_empty, user, user, user)
         gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
 
-        repo_config.set_permission({ :group => group, :permissions => permission, :repo => repo })
+        repo_config.set_permissions({ :group => group, :permissions => permission, :repo => repo })
       end
     end
   end

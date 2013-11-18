@@ -1,5 +1,4 @@
 require_relative '../spec_helper'
-require 'pry'
 
 describe Sinatra::Application do
   let(:repo_config_double) { double() }

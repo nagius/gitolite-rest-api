@@ -93,7 +93,7 @@ class RepoConfig
     save "removed group #{group_name} with all users"
   end
 
-  def set_permission(options)
+  def set_permissions(options)
     repo = @repo.config.get_repo(options[:repo])
     permission_to = nil
     

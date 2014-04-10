@@ -47,7 +47,7 @@ class RepoConfig
   end
 
   def remove_repo(repo_name)
-    @repo.rm_repo(repo_name)
+    @repo.config.rm_repo(repo_name)
     save "removed repo #{repo_name}"
   end
 

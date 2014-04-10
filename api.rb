@@ -7,6 +7,7 @@ require 'json'
 config_file 'config.yml'
 DELETED_STATUS = 204
 CREATED_STATUS = 201
+BAD_REQUEST_STATUS = 400
 
 before do
   @repo_config = RepoConfig.new(settings.gitolite_root_dir)
@@ -19,6 +20,10 @@ get '/repos' do
 end
 
 post '/repos' do
+  if params[:repo_name].to_s.empty?	# Check both nil and empty
+    return BAD_REQUEST_STATUS
+  end
+
   @repo_config.add_repo params[:repo_name]
 
   CREATED_STATUS

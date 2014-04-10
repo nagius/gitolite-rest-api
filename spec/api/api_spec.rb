@@ -14,6 +14,7 @@ describe Sinatra::Application do
   let(:created_http_status) { 201 }
   let(:ok_http_status) { 200 }
   let(:deleted_http_status) { 204 }
+  let(:bad_http_status) { 400 }
 
   before do
     stub_const 'RepoConfig', repo_config_double
@@ -38,6 +39,11 @@ describe Sinatra::Application do
 
       post '/repos', :repo_name => repo_name
       last_response.status.should be_eql created_http_status
+    end
+
+    it "should return BAD REQUEST with empty repo_name" do
+      post '/repos', :repo_name => ""
+      last_response.status.should be_eql bad_http_status
     end
   end
 

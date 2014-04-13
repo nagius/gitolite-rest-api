@@ -36,7 +36,7 @@ class RepoConfig
   end
 
   def remove_user(username)
-    key = @repo.ssh_keys.keys[username]
+    key = @repo.ssh_keys[username]
     key = [key] unless key.instance_of? Array
 
     key.each do |item|

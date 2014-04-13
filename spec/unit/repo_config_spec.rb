@@ -76,7 +76,7 @@ describe RepoConfig do
   describe ".remove_user" do
     context "user has one key" do
       it "should remove the key" do
-        gitolite_admin_class_double.stub_chain(:ssh_keys, :keys, :[]).with(user).and_return(gitolite_ssh_key_class_double)
+        gitolite_admin_class_double.stub_chain(:ssh_keys, :[]).with(user).and_return(gitolite_ssh_key_class_double)
         gitolite_admin_class_double.should_receive(:rm_key).once.with(gitolite_ssh_key_class_double)
         gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
 
@@ -86,7 +86,7 @@ describe RepoConfig do
 
     context "user has many keys" do
       it "should remove all keys" do
-        gitolite_admin_class_double.stub_chain(:ssh_keys, :keys, :[]).with(user).and_return([gitolite_ssh_key_class_double, gitolite_ssh_key_class_double])
+        gitolite_admin_class_double.stub_chain(:ssh_keys, :[]).with(user).and_return([gitolite_ssh_key_class_double, gitolite_ssh_key_class_double])
         gitolite_admin_class_double.should_receive(:rm_key).twice.with(gitolite_ssh_key_class_double)
         gitolite_admin_class_double.should_receive(:save_and_apply).with(an_instance_of(String))
 

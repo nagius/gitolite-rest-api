@@ -29,7 +29,7 @@ post '/repos' do
   CREATED_STATUS
 end
 
-delete '/repos' do
+delete '/repos/:repo_name' do
   @repo_config.remove_repo params[:repo_name]
 
   DELETED_STATUS
@@ -47,7 +47,7 @@ post '/users' do
   CREATED_STATUS
 end
 
-delete '/users' do
+delete '/users/:username' do
   @repo_config.remove_user params[:username]
 
   DELETED_STATUS
@@ -69,7 +69,7 @@ post '/groups' do
   CREATED_STATUS
 end
 
-delete '/groups' do
+delete '/groups/:group_name' do
   @repo_config.remove_group params[:group_name]
 
   DELETED_STATUS

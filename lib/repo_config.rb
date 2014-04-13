@@ -6,11 +6,11 @@ class RepoConfig
   end
 
   def users
-    @repo.ssh_keys.keys
+    @repo.ssh_keys.keys - ["id_rsa"]
   end
 
   def repos
-    @repo.config.repos.keys
+    @repo.config.repos.keys - ["gitolite-admin"]
   end
 
   def groups

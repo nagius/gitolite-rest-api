@@ -8,6 +8,7 @@ config_file 'config.yml'
 DELETED_STATUS = 204
 CREATED_STATUS = 201
 BAD_REQUEST_STATUS = 400
+FORBIDDEN_STATUS = 403
 
 before do
   @repo_config = RepoConfig.new(settings.gitolite_root_dir)
@@ -30,6 +31,10 @@ post '/repos' do
 end
 
 delete '/repos/:repo_name' do
+  if params[:repo_name] == "gitolite-admin"
+    return FORBIDDEN_STATUS
+  end
+
   @repo_config.remove_repo params[:repo_name]
 
   DELETED_STATUS
@@ -48,6 +53,10 @@ post '/users' do
 end
 
 delete '/users/:username' do
+  if params[:username] == "id_rsa"
+    return FORBIDDEN_STATUS
+  end
+
   @repo_config.remove_user params[:username]
 
   DELETED_STATUS

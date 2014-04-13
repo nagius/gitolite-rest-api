@@ -15,6 +15,7 @@ describe Sinatra::Application do
   let(:ok_http_status) { 200 }
   let(:deleted_http_status) { 204 }
   let(:bad_http_status) { 400 }
+  let(:forbidden_http_status) { 403 }
 
   before do
     stub_const 'RepoConfig', repo_config_double
@@ -54,6 +55,11 @@ describe Sinatra::Application do
       delete "/repos/#{repo_name}"
       last_response.status.should be_eql deleted_http_status
     end
+
+    it "should not delete gitolite-admin repository" do
+      delete "/repos/gitolite-admin"
+      last_response.status.should be_eql forbidden_http_status
+    end
   end
 
   context "responding to GET /users" do
@@ -82,6 +88,11 @@ describe Sinatra::Application do
 
       delete "/users/#{username}"
       last_response.status.should be_eql deleted_http_status
+    end
+
+    it "should not delete admin user" do
+      delete "/users/id_rsa"
+      last_response.status.should be_eql forbidden_http_status
     end
   end
 

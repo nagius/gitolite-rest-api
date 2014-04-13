@@ -122,6 +122,15 @@ describe Sinatra::Application do
     end
   end
 
+  context "responding to POST /groups/:group_name/user" do
+    it "should add a user to the group" do
+      repo_config_double.should_receive(:add_to_group).with(username, group_name)
+
+      post "/groups/#{group_name}/user", :username => username
+      last_response.status.should be_eql created_http_status
+    end
+  end
+
   context "responding DELETE /groups" do
     it "should delete the group with all users" do
       repo_config_double.should_receive(:remove_group).with(group_name)

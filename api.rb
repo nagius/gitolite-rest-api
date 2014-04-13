@@ -78,6 +78,12 @@ post '/groups' do
   CREATED_STATUS
 end
 
+post '/groups/:group_name/user' do
+  @repo_config.add_to_group(params[:username], params[:group_name])
+
+  CREATED_STATUS
+end
+
 delete '/groups/:group_name' do
   @repo_config.remove_group params[:group_name]
 

@@ -1,0 +1,4 @@
+# Gitolite-REST-API configuration file
+#
+# Set this value to the path of a gitolite-admin repo
+gitolite_root_dir: /srv/gitolite-rest-api/gitolite-admin/

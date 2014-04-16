@@ -1,5 +1,3 @@
 logs/
 .versions.conf
-config.yml
-config.ru
-config_thin.yml
+Gemfile.lock

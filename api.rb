@@ -96,7 +96,7 @@ delete '/groups/:group_name/user/:username' do
   DELETED_STATUS
 end
 
-post '/:repo/permissions' do
+post '/repos/:repo/permissions' do
   keys = ['user', 'users', 'group', 'repo', 'permissions']
   method_params = {}
   keys.each do | key |

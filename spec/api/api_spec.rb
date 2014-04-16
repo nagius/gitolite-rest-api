@@ -149,25 +149,25 @@ describe Sinatra::Application do
     end
   end
 
-  context "responding to POST /:repo/permissions" do
+  context "responding to POST /repos/:repo/permissions" do
     it "should be able to apply a permission to an user" do
       repo_config_double.should_receive(:set_permissions).with({ :user => user, :permissions => permissions, :repo => repo_name })
 
-      post "/#{repo_name}/permissions", { :user => user, :permissions => permissions }
+      post "/repos/#{repo_name}/permissions", { :user => user, :permissions => permissions }
       last_response.status.should be_eql ok_http_status
     end
 
     it "should be able to apply a permission to many users" do
       repo_config_double.should_receive(:set_permissions).with({ :users => [user, other_user], :permissions => permissions, :repo => repo_name })
 
-      post "/#{repo_name}/permissions", { :users => [user, other_user], :permissions => permissions }
+      post "/repos/#{repo_name}/permissions", { :users => [user, other_user], :permissions => permissions }
       last_response.status.should be_eql ok_http_status
     end
 
     it "should be able to apply a permission to a group" do
       repo_config_double.should_receive(:set_permissions).with({ :group => group_name, :permissions => permissions, :repo => repo_name })
 
-      post "/#{repo_name}/permissions", { :group => group_name, :permissions => permissions }
+      post "/repos/#{repo_name}/permissions", { :group => group_name, :permissions => permissions }
       last_response.status.should be_eql ok_http_status
     end
   end

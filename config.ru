@@ -1,4 +1,5 @@
 require './api'
+require 'rack/contrib'
 
 class App < Sinatra::Application
 	configure do
@@ -31,5 +32,6 @@ class ExceptionHandling
 	end
 end
  
+use Rack::PostBodyContentTypeParser
 use ExceptionHandling
 run App

@@ -45,6 +45,8 @@ Edit `config.yml` and set the value of `gitolite_root_dir` with the path of the 
 API Reference
 -------------
 
+This API can take both of "application/x-www-form-urlencoded" and "application/json" for POST input, and return JSON objects.
+
 ### Repositories
 
  * List repositories
@@ -94,6 +96,8 @@ API Reference
  * Delete a group
 
 `curl -X DELETE localhost:4567/groups/sales`
+
+### Permissions
 
  * Add permission to a group
 
